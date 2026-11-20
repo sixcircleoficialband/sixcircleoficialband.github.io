@@ -1,0 +1,10 @@
+# Nunca subir llaves ni archivos privados
+*.jks
+*.keystore
+*.p12
+*.pk8
+*.pem
+*.key
+.env
+.DS_Store
+Thumbs.db

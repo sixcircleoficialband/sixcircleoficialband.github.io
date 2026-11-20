@@ -1,0 +1,116 @@
+==========================================================================
+  CÓMO EDITAR LA WEB DE SIX CIRCLE  (guía paso a paso)
+==========================================================================
+
+Dirección de la web:  https://ghatugames.github.io/sixcircle/
+Repositorio:          https://github.com/GhatuGames/sixcircle
+
+TODO el contenido está en UN solo archivo:   data/banda.js
+Ábrelo con cualquier editor de texto (Bloc de notas, VS Code, Notepad++)
+o directamente en GitHub (abre el archivo y toca el lápiz ✏️ "Edit").
+Los demás archivos (assets/js/sitio.js, assets/css/estilo.css, *.html) NO
+hace falta tocarlos.
+
+REGLA DE ORO: respeta las comillas '...' y pon una coma entre bloques
+{ ... }. Si un texto lleva apóstrofo (ej.: Don't), escríbelo entre comillas
+dobles: "Don't Stop". Si la página sale vacía tras un cambio, casi siempre
+falta una coma o una comilla (F12 -> pestaña "Consola" muestra la línea).
+
+--------------------------------------------------------------------------
+ 1) DATOS PENDIENTES (¡complétalos primero!)
+--------------------------------------------------------------------------
+En data/banda.js, dentro de SC.banda, busca las líneas marcadas con ⚠️:
+  bio:         párrafos de la biografía. Reemplaza el texto 'PENDIENTE: ...'
+               bio: [
+                 'Primer párrafo...',
+                 'Segundo párrafo...'
+               ],
+  ciudad:      'La Paz'   (o la que corresponda)
+  desde:       '2024'     (año de formación)
+  integrantes: un bloque por persona:
+               { nombre: 'Nombre Apellido', rol: 'Voz', foto: '' },
+               Para poner foto: guarda una imagen cuadrada (ej. 600x600, WebP o
+               JPG) en assets/img/integrantes/ y escribe
+               foto: 'assets/img/integrantes/nombre.webp'
+  correo:      'contacto@ejemplo.com'  (para prensa y shows)
+  whatsapp:    '59170000000'  (código de país + número, sin + ni espacios)
+Mientras un dato diga 'PENDIENTE' o esté vacío '', la web NO lo muestra
+(en su lugar aparece "Muy pronto…"). No hay que borrar nada.
+
+--------------------------------------------------------------------------
+ 2) AGREGAR UN LANZAMIENTO NUEVO (sencillo, EP o álbum)
+--------------------------------------------------------------------------
+1. Guarda la portada (cuadrada, ~360x360, WebP o JPG, menos de 80 KB) en:
+     assets/img/portadas/nombre-del-tema.webp
+   (Para convertir/comprimir gratis: https://squoosh.app -> WebP, calidad 75)
+2. En data/banda.js busca  SC.lanzamientos = [
+3. Justo debajo, pega este bloque (el más nuevo va PRIMERO):
+  { titulo: 'Nombre del tema', tipo: 'Sencillo', fecha: '2026-12-01', genero: 'Metal',
+    portada: 'assets/img/portadas/nombre-del-tema.webp',
+    enlaces: { spotify: 'https://open.spotify.com/...', apple: '', youtube: '', deezer: '', amazon: '', qobuz: '' } },
+   - tipo: 'Sencillo', 'Sencillo en vivo', 'EP' o 'Álbum'  (si contiene
+     "vivo" aparece la cinta EN VIVO y entra en el filtro "En vivo").
+   - genero: 'Metal' o 'Rock' (para los filtros de la página Música).
+   - fecha: año-mes-día.
+   - enlaces: pega los que tengas; los vacíos '' no se muestran.
+4. El primer lanzamiento de la lista sale grande en el Inicio como
+   "Último lanzamiento".
+
+--------------------------------------------------------------------------
+ 3) AGREGAR UN VIDEO DE YOUTUBE
+--------------------------------------------------------------------------
+1. Copia el enlace del video, ej.: https://www.youtube.com/watch?v=ZoM25X4KyQQ
+   El ID es lo que va después de "v="  ->  ZoM25X4KyQQ
+   (en enlaces cortos https://youtu.be/ZoM25X4KyQQ es lo que va después de /)
+2. En data/banda.js busca  SC.videos = [  y pega ARRIBA de todo:
+  { id: 'ZoM25X4KyQQ', destacado: true, titulo: 'Six Circle - Nombre', fecha: '2026-12-01' },
+   - destacado: true -> aparece en el Inicio (se muestran los 3 primeros).
+3. La miniatura se descarga sola desde YouTube. (Opcional: para que cargue
+   más rápido guarda una imagen 480x270 en assets/img/videos/<ID>.webp)
+Los videos solo se cargan cuando el visitante toca ▶ (más liviano y privado).
+
+--------------------------------------------------------------------------
+ 4) CAMBIAR O QUITAR REDES Y PLATAFORMAS
+--------------------------------------------------------------------------
+En SC.enlaces cambia el enlace o déjalo vacío '' para ocultarlo.
+Amazon Music: hoy apunta al sencillo «Golden Sun». Si encuentran la página
+de artista en Amazon Music, reemplácenla ahí.
+Reproductor de Spotify: SC.spotifyArtista = ID del artista (lo que va
+después de /artist/ en el enlace de Spotify).
+
+--------------------------------------------------------------------------
+ 5) LOGO E IMÁGENES
+--------------------------------------------------------------------------
+- assets/img/logo-512.webp y logo-256.webp: logo (avatar del canal de YouTube).
+- assets/img/fondo-escenario.webp (PC) y fondo-escenario-movil.webp
+  (celular): fondo del Inicio. Es una ILUSTRACIÓN DECORATIVA hecha con IA,
+  NO una foto de la banda. Si tienen una foto real del grupo o un banner,
+  reemplacen esos dos archivos con el MISMO nombre (horizontal ~1600x900
+  para PC; vertical ~720x960 para celular).
+
+--------------------------------------------------------------------------
+ 6) VER LOS CAMBIOS ANTES DE PUBLICAR
+--------------------------------------------------------------------------
+- Rápido: doble clic en index.html.
+- Igual que en internet: en una terminal dentro de la carpeta
+      python3 -m http.server 8000      (Windows: py -m http.server 8000)
+  y abre http://localhost:8000
+
+--------------------------------------------------------------------------
+ 7) PUBLICAR LOS CAMBIOS
+--------------------------------------------------------------------------
+Opción fácil (sin programas): en https://github.com/GhatuGames/sixcircle
+abre el archivo, toca ✏️, edita y pulsa "Commit changes". Para subir imágenes:
+entra a la carpeta (ej. assets/img/portadas) -> "Add file" -> "Upload files".
+Opción con git (desde esta carpeta):
+    git add .
+    git commit -m "Nuevo sencillo"
+    git push
+En 1-2 minutos la web se actualiza sola.
+
+--------------------------------------------------------------------------
+ 8) DOMINIO PROPIO (opcional, más adelante)
+--------------------------------------------------------------------------
+Si compran un dominio (ej. sixcircle.com): en el repositorio -> Settings ->
+Pages -> Custom domain, y siguen las instrucciones de DNS. No hay que cambiar
+nada más: todos los enlaces de la web son relativos.
