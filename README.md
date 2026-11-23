@@ -1,6 +1,6 @@
 # Six Circle — sitio web oficial
 
-Sitio estático (HTML + CSS + JS, sin compilación ni librerías externas) publicado con GitHub Pages en https://ghatugames.github.io/sixcircle/
+Sitio estático (HTML + CSS + JS, sin compilación ni librerías externas) publicado con GitHub Pages en https://sixcircleoficialband.github.io/
 
 - **Todo el contenido** (biografía, integrantes, lanzamientos, videos, enlaces): `data/banda.js`
 - **Guía de edición paso a paso:** [EDITAR-WEB.txt](EDITAR-WEB.txt)

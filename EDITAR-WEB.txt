@@ -2,8 +2,8 @@
   CÓMO EDITAR LA WEB DE SIX CIRCLE  (guía paso a paso)
 ==========================================================================
 
-Dirección de la web:  https://ghatugames.github.io/sixcircle/
-Repositorio:          https://github.com/GhatuGames/sixcircle
+Dirección de la web:  https://sixcircleoficialband.github.io/
+Repositorio:          https://github.com/sixcircleoficialband/sixcircleoficialband.github.io
 
 TODO el contenido está en UN solo archivo:   data/banda.js
 Ábrelo con cualquier editor de texto (Bloc de notas, VS Code, Notepad++)
@@ -99,7 +99,7 @@ después de /artist/ en el enlace de Spotify).
 --------------------------------------------------------------------------
  7) PUBLICAR LOS CAMBIOS
 --------------------------------------------------------------------------
-Opción fácil (sin programas): en https://github.com/GhatuGames/sixcircle
+Opción fácil (sin programas): en https://github.com/sixcircleoficialband/sixcircleoficialband.github.io
 abre el archivo, toca ✏️, edita y pulsa "Commit changes". Para subir imágenes:
 entra a la carpeta (ej. assets/img/portadas) -> "Add file" -> "Upload files".
 Opción con git (desde esta carpeta):
