@@ -177,3 +177,23 @@ En 1-2 minutos la web se actualiza sola.
 Si compran un dominio (ej. sixcircle.com): en el repositorio -> Settings ->
 Pages -> Custom domain, y siguen las instrucciones de DNS. No hay que cambiar
 nada más: todos los enlaces de la web son relativos.
+
+--------------------------------------------------------------------------
+ 10) ACTUALIZACIÓN AUTOMÁTICA DIARIA (GitHub Actions)
+--------------------------------------------------------------------------
+Todos los días a las 19:30 (hora de Bolivia) GitHub revisa solo:
+  - el canal de YouTube (videos nuevos),
+  - Deezer y Apple Music (sencillos, EP y álbumes nuevos o relanzados),
+y si encuentra algo que todavía no está en la web lo agrega a data/banda.js
+con su noticia en data/noticias.js (formato de la sección 4), descarga la
+miniatura/portada y publica el cambio. Si no hay nada nuevo, no toca nada.
+  - Ver las ejecuciones: pestaña "Actions" del repositorio ->
+    "Actualizar web (YouTube, Deezer, Apple Music)".
+  - Ejecutarlo ya: en esa misma página, botón "Run workflow".
+  - Lo que agrega se puede corregir o borrar a mano como cualquier otro
+    bloque; no vuelve a agregar algo que ya está (compara el ID del video
+    y el título del lanzamiento).
+  - Spotify, YouTube Music, Qobuz y Amazon no tienen fuente pública sin
+    clave: esos enlaces se siguen agregando a mano.
+  - Archivos: .github/workflows/actualizar-web.yml y
+    .github/scripts/actualizar-contenido.js (no hace falta tocarlos).
