@@ -5,8 +5,10 @@
 Dirección de la web:  https://sixcircleoficialband.github.io/
 Repositorio:          https://github.com/sixcircleoficialband/sixcircleoficialband.github.io
 
-TODO el contenido está en UN solo archivo:   data/banda.js
-Ábrelo con cualquier editor de texto (Bloc de notas, VS Code, Notepad++)
+El contenido está en DOS archivos de texto:
+  data/banda.js      banda, lanzamientos, videos y enlaces
+  data/noticias.js   noticias (página Noticias y "Últimas noticias" del Inicio)
+Ábrelos con cualquier editor de texto (Bloc de notas, VS Code, Notepad++)
 o directamente en GitHub (abre el archivo y toca el lápiz ✏️ "Edit").
 Los demás archivos (assets/js/sitio.js, assets/css/estilo.css, *.html) NO
 hace falta tocarlos.
@@ -70,7 +72,68 @@ Mientras un dato diga 'PENDIENTE' o esté vacío '', la web NO lo muestra
 Los videos solo se cargan cuando el visitante toca ▶ (más liviano y privado).
 
 --------------------------------------------------------------------------
- 4) CAMBIAR O QUITAR REDES Y PLATAFORMAS
+ 4) AGREGAR UNA NOTICIA  (página Noticias)
+--------------------------------------------------------------------------
+Las noticias están en  data/noticias.js . La página noticias.html muestra
+todas (de 12 en 12, con filtros) y el Inicio muestra las 3 más nuevas.
+La web las ordena SOLA por fecha (la más nueva primero).
+
+1. Abre data/noticias.js y busca  SC.noticias = [
+2. Justo debajo pega un bloque como este (y termina con una coma):
+
+  { fecha: '2026-12-01', tipo: 'show', clave: 'show:la-paz-2026-12-01',
+    titulo: 'Título corto de la noticia',
+    texto: 'Una o dos frases contando la novedad.',
+    imagen: '', enlace: '', enlaceTexto: '' },
+
+   - fecha:  año-mes-día.
+   - tipo:   'lanzamiento', 'video', 'show' o 'web' (crea los filtros
+             "Lanzamientos", "Videos", "Shows", "Web").
+   - clave:  un nombre único para no repetir la misma noticia
+             (ej. 'video:ZoM25X4KyQQ', 'lanzamiento:golden-sun').
+   - imagen: '' = se muestra el logo. O una imagen de la web, ej.
+             'assets/img/portadas/golden-sun.webp'  (portadas) o
+             'assets/img/videos/<ID>.webp'           (miniaturas de video)
+             o una nueva que subas a assets/img/noticias/ (WebP/JPG < 100 KB).
+   - enlace: '' = sin botón. Un enlace 'https://...' (se abre aparte) o una
+             página de la web: 'musica.html', 'videos.html', 'banda.html'.
+   - enlaceTexto: texto del botón, ej. 'Ver en YouTube' ('' = "Ver más").
+3. Para quitar una noticia, borra su bloque { ... } completo (con su coma).
+IMPORTANTE: escribe solo hechos reales (fechas, títulos y enlaces que
+existen). Si un texto lleva apóstrofo (Don't) usa comillas dobles "...".
+
+FORMATO EXACTO PARA LANZAMIENTOS Y VIDEOS NUEVOS (lo usa también la
+actualización automática diaria; copia el patrón tal cual):
+
+  Video nuevo de YouTube (mismo día que se agrega a SC.videos en banda.js):
+  { fecha: '<AAAA-MM-DD del video>', tipo: 'video', clave: 'video:<ID>',
+    titulo: 'Nuevo video: «<título del video tal como está en YouTube>»',
+    texto: 'Ya está en el canal de YouTube de Six Circle.',
+    imagen: 'assets/img/videos/<ID>.webp', enlace: 'https://www.youtube.com/watch?v=<ID>', enlaceTexto: 'Ver en YouTube' },
+
+  Lanzamiento nuevo (mismo día que se agrega a SC.lanzamientos en banda.js):
+  { fecha: '<AAAA-MM-DD>', tipo: 'lanzamiento', clave: 'lanzamiento:<titulo-en-minusculas-con-guiones>',
+    titulo: 'Nuevo sencillo: «<Título>»',
+    texto: '«<Título>» ya está en plataformas digitales (sencillo · metal). Disponible en Apple Music y Deezer.',
+    imagen: 'assets/img/portadas/<archivo>.webp', enlace: '<primer enlace que exista, en el orden de abajo>', enlaceTexto: 'Escuchar en Apple Music' },
+   - "sencillo" = el tipo en minúsculas ('sencillo en vivo', 'ep', 'álbum')
+     tanto en titulo ('Nuevo sencillo en vivo: «…»') como en texto.
+   - "· metal" = el género en minúsculas; si no hay género, quítalo: '(sencillo).'
+   - "Disponible en …" = solo las plataformas con enlace, en orden Spotify,
+     Apple Music, YouTube, Deezer, Qobuz, Amazon Music, unidas con ", " e "y".
+   - enlace: el PRIMERO que exista en ese mismo orden (Spotify, Apple Music,
+     YouTube, Deezer, Qobuz, Amazon Music). Si no hay ninguno:
+     enlace: 'musica.html', enlaceTexto: 'Ver en Música'.
+   - enlaceTexto: 'Escuchar en Spotify' / 'Escuchar en Apple Music' /
+     'Ver en YouTube' / 'Escuchar en Deezer' según el enlace elegido.
+   - Si el título ya tenía una versión anterior (otrasFechas en banda.js),
+     agrega al final del texto: ' Versión anterior: 10 sep 2026.'
+   - Antes de agregar, busca la clave en el archivo: si ya existe, NO la
+     repitas. Videos sin título real (ej. '25 de octubre de 2026') no llevan
+     noticia.
+
+--------------------------------------------------------------------------
+ 5) CAMBIAR O QUITAR REDES Y PLATAFORMAS
 --------------------------------------------------------------------------
 En SC.enlaces cambia el enlace o déjalo vacío '' para ocultarlo.
 Amazon Music: hoy apunta al sencillo «Golden Sun». Si encuentran la página
@@ -79,7 +142,7 @@ Reproductor de Spotify: SC.spotifyArtista = ID del artista (lo que va
 después de /artist/ en el enlace de Spotify).
 
 --------------------------------------------------------------------------
- 5) LOGO E IMÁGENES
+ 6) LOGO E IMÁGENES
 --------------------------------------------------------------------------
 - assets/img/logo-512.webp y logo-256.webp: logo (avatar del canal de YouTube).
 - assets/img/fondo-escenario.webp (PC) y fondo-escenario-movil.webp
@@ -89,15 +152,15 @@ después de /artist/ en el enlace de Spotify).
   para PC; vertical ~720x960 para celular).
 
 --------------------------------------------------------------------------
- 6) VER LOS CAMBIOS ANTES DE PUBLICAR
+ 7) VER LOS CAMBIOS ANTES DE PUBLICAR
 --------------------------------------------------------------------------
-- Rápido: doble clic en index.html.
+- Rápido: doble clic en index.html (o noticias.html).
 - Igual que en internet: en una terminal dentro de la carpeta
       python3 -m http.server 8000      (Windows: py -m http.server 8000)
   y abre http://localhost:8000
 
 --------------------------------------------------------------------------
- 7) PUBLICAR LOS CAMBIOS
+ 8) PUBLICAR LOS CAMBIOS
 --------------------------------------------------------------------------
 Opción fácil (sin programas): en https://github.com/sixcircleoficialband/sixcircleoficialband.github.io
 abre el archivo, toca ✏️, edita y pulsa "Commit changes". Para subir imágenes:
@@ -109,7 +172,7 @@ Opción con git (desde esta carpeta):
 En 1-2 minutos la web se actualiza sola.
 
 --------------------------------------------------------------------------
- 8) DOMINIO PROPIO (opcional, más adelante)
+ 9) DOMINIO PROPIO (opcional, más adelante)
 --------------------------------------------------------------------------
 Si compran un dominio (ej. sixcircle.com): en el repositorio -> Settings ->
 Pages -> Custom domain, y siguen las instrucciones de DNS. No hay que cambiar

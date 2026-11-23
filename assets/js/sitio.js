@@ -1,8 +1,11 @@
 /* Six Circle — lógica de la web. Para cambiar contenido NO edites este
-   archivo: edita data/banda.js (ver EDITAR-WEB.txt). */
+   archivo: edita data/banda.js o data/noticias.js (ver EDITAR-WEB.txt). */
 (function () {
   'use strict';
   var SC = window.SC || {}, B = SC.banda || {}, E = SC.enlaces || {}, L = SC.lanzamientos || [], V = SC.videos || [];
+  /* noticias (data/noticias.js): se ordenan solas por fecha, la más nueva primero */
+  var N = (Array.isArray(SC.noticias) ? SC.noticias : []).filter(function (n) { return n && n.titulo; })
+    .map(function (n, i) { return { n: n, i: i }; }).sort(function (a, b) { return String(b.n.fecha || '').localeCompare(String(a.n.fecha || '')) || a.i - b.i; }).map(function (x) { return x.n; });
   var $ = function (s, r) { return (r || document).querySelector(s); };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   var MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -30,7 +33,7 @@
   function plat(k, clase) { return E[k] ? '<a class="' + (clase || 'plat') + '"' + ext(E[k]) + ' data-plat="' + k + '">' + I[k] + '<span>' + NOMBRES[k] + '</span></a>' : ''; }
 
   /* cabecera y pie */
-  var MENU = [['index', 'index.html', 'Inicio'], ['musica', 'musica.html', 'Música'], ['videos', 'videos.html', 'Videos'], ['banda', 'banda.html', 'La banda']];
+  var MENU = [['index', 'index.html', 'Inicio'], ['musica', 'musica.html', 'Música'], ['videos', 'videos.html', 'Videos'], ['noticias', 'noticias.html', 'Noticias'], ['banda', 'banda.html', 'La banda']];
   $('#cabecera').innerHTML = '<div class="envoltura barra"><a class="marca" href="index.html"><img src="assets/img/logo-256.webp" alt="" width="40" height="40">' + esc(B.nombre) + '</a>' +
     '<button class="boton-menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">☰</button><nav class="menu" id="menu" aria-label="Principal">' +
     MENU.map(function (m) { return '<a href="' + m[1] + '"' + (m[0] === pagina ? ' class="activo" aria-current="page"' : '') + '>' + m[2] + '</a>'; }).join('') + '</nav></div>';
@@ -77,6 +80,15 @@
     return '<article class="video"><div class="marco" data-yt="' + esc(v.id) + '"><button type="button" class="cargar" aria-label="Reproducir: ' + esc(v.titulo) + '"><img src="' + miniatura(v) + '" alt="" loading="lazy" width="480" height="270" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + esc(v.id) + '/hqdefault.jpg\'"><span class="play" aria-hidden="true">▶</span></button></div>' +
       '<div class="info"><h3>' + esc(v.titulo) + '</h3><div class="meta">' + fecha(v.fecha) + ' · <a' + ext('https://www.youtube.com/watch?v=' + v.id) + '>Ver en YouTube</a></div></div></article>';
   }
+  var TIPO_N = { lanzamiento: 'Lanzamiento', video: 'Video', show: 'Show', web: 'Web' };
+  function noticia(n) {
+    var u = String(n.enlace || ''), fuera = /^https?:/i.test(u), seguro = fuera || /^[a-z0-9][a-z0-9._\/#?=&-]*$/i.test(u);
+    var a = seguro && u ? (fuera ? ext(u) : ' href="' + esc(u) + '"') : '';
+    var img = '<img src="' + esc(n.imagen || 'assets/img/logo-256.webp') + '" alt="" loading="lazy" width="240" height="240"' + (n.imagen ? ' onerror="this.onerror=null;this.src=\'assets/img/logo-256.webp\'"' : '') + '>';
+    return '<article class="noticia" data-tipo="' + esc(n.tipo || '') + '">' + (a ? '<a class="foto"' + a + ' tabindex="-1" aria-hidden="true">' + img + '</a>' : '<div class="foto">' + img + '</div>') +
+      '<div class="info"><div class="meta">' + (TIPO_N[n.tipo] ? '<span class="tipo-n">' + TIPO_N[n.tipo] + '</span>' : '') + '<time datetime="' + esc(n.fecha) + '">' + fecha(n.fecha) + '</time></div>' +
+      '<h3>' + esc(n.titulo) + '</h3>' + (n.texto ? '<p>' + esc(n.texto) + '</p>' : '') + (a ? '<a class="leer"' + a + '>' + esc(n.enlaceTexto || 'Ver más') + ' →</a>' : '') + '</div></article>';
+  }
   function spotify() {
     if (!SC.spotifyArtista) return '';
     return '<div class="spotify" data-sp="' + esc(SC.spotifyArtista) + '"><button type="button" class="cargar" aria-label="Cargar el reproductor de Spotify"><img src="assets/img/logo-256.webp" alt="" width="110" height="110"><span class="verde">' + I.spotify.replace('#08080a', '#1ed760') + ' Escuchar en Spotify</span><small style="color:var(--suave);letter-spacing:.05em;text-transform:none;font-weight:600">Toca para cargar el reproductor</small></button></div>' +
@@ -96,6 +108,7 @@
       (u ? '<section class="seccion"><div class="envoltura">' + titulo('Último lanzamiento') + '<div class="destacado"><img src="' + esc(u.portada) + '" alt="Portada de ' + esc(u.titulo) + '" width="360" height="360"><div><div class="fecha">' + esc(u.tipo) + ' · ' + fecha(u.fecha) + '</div><h2 style="font-size:clamp(34px,6vw,60px);margin:.15em 0 .3em">' + esc(u.titulo) + '</h2><p style="color:var(--suave)">Disponible en todas las plataformas digitales.</p><div class="plataformas">' + MUSICA.map(function (k) { return plat(k); }).join('') + '</div></div></div></div></section>' : '') +
       '<section class="seccion"><div class="envoltura"><div class="dos-col"><div>' + titulo('Escúchanos', 'Sus canciones más escuchadas en Spotify.') + spotify() + '</div><div>' + titulo('Síguenos') + '<div class="rejilla-plat">' + REDES.map(function (k) { return plat(k); }).join('') + '</div>' +
       '<div class="caja" style="margin-top:16px"><h3>Lanzamientos recientes</h3><ul class="datos">' + L.slice(1, 6).map(function (l) { return '<li><b>' + esc(l.titulo) + '</b><span>' + fecha(l.fecha) + '</span></li>'; }).join('') + '</ul><a class="btn borde" style="margin-top:12px;width:100%" href="musica.html">Ver toda la música</a></div></div></div></div></section>' +
+      (N.length ? '<section class="seccion"><div class="envoltura">' + titulo('Últimas noticias', '', '<a class="btn borde" href="noticias.html">Ver todas</a>') + '<div class="noticias">' + N.slice(0, 3).map(noticia).join('') + '</div></div></section>' : '') +
       '<section class="seccion"><div class="envoltura">' + titulo('Videos', 'Lo último en nuestro canal de YouTube.', '<a class="btn borde" href="videos.html">Ver todos</a>') + '<div class="videos">' + destacados.slice(0, 3).map(video).join('') + '</div></div></section>';
   };
   P.musica = function () {
@@ -108,6 +121,15 @@
   P.videos = function () {
     return cabeza('Videos', 'Videoclips, letras subtituladas y presentaciones en vivo.' + (E.youtube ? ' <a' + ext(E.youtube) + '>Suscríbete al canal</a>.' : '')) +
       '<section class="seccion" style="padding-top:20px"><div class="envoltura"><div class="videos">' + V.map(video).join('') + '</div><p class="nota" style="margin-top:16px">Los videos se cargan solo al tocarlos (modo de privacidad mejorada de YouTube).</p></div></section>';
+  };
+  var POR_TANDA = 12;
+  P.noticias = function () {
+    var hay = {}; N.forEach(function (n) { hay[n.tipo] = 1; });
+    var f = [['', 'Todas']].concat([['lanzamiento', 'Lanzamientos'], ['video', 'Videos'], ['show', 'Shows'], ['web', 'Web']].filter(function (x) { return hay[x[0]]; }));
+    return cabeza('Noticias', 'Lanzamientos, videos y novedades de ' + esc(B.nombre) + ', de lo más nuevo a lo más antiguo.') +
+      '<section class="seccion" style="padding-top:20px"><div class="envoltura">' + (N.length ? '<div class="filtros" role="group" aria-label="Filtrar noticias">' + f.map(function (x, i) { return '<button type="button"' + (i ? '' : ' class="activo"') + ' data-f="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>' +
+      '<div class="noticias" id="lista-noticias"></div><div style="text-align:center;margin-top:22px"><button type="button" class="btn borde" id="mas-noticias" hidden>Ver más noticias</button></div>'
+      : '<div class="caja pronto"><p style="margin:0">Muy pronto: las novedades de ' + esc(B.nombre) + '.</p></div>') + '</div></section>';
   };
   P.banda = function () {
     var bio = (B.bio || []).filter(function (p) { return !pendiente(p); });
@@ -136,6 +158,23 @@
     if (yt) box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(yt) + '?autoplay=1&rel=0" title="Video de YouTube" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
     else if (sp) box.innerHTML = '<iframe src="https://open.spotify.com/embed/artist/' + encodeURIComponent(sp) + '?theme=0" title="Reproductor de Spotify: ' + esc(B.nombre) + '" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>';
   });
+  if (pagina === 'noticias' && N.length) {
+    var filtro = '', cuantas = POR_TANDA, lista = $('#lista-noticias'), mas = $('#mas-noticias');
+    var pintar = function () {
+      var sel = N.filter(function (n) { return !filtro || n.tipo === filtro; });
+      lista.innerHTML = sel.slice(0, cuantas).map(noticia).join('');
+      mas.hidden = sel.length <= cuantas;
+    };
+    main.querySelectorAll('.filtros button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        filtro = b.getAttribute('data-f'); cuantas = POR_TANDA;
+        main.querySelectorAll('.filtros button').forEach(function (x) { x.classList.toggle('activo', x === b); x.setAttribute('aria-pressed', x === b); });
+        pintar();
+      });
+    });
+    mas.addEventListener('click', function () { cuantas += POR_TANDA; pintar(); });
+    pintar();
+  }
   if (pagina === 'musica') {
     main.querySelectorAll('.filtros button').forEach(function (b) {
       b.addEventListener('click', function () {
