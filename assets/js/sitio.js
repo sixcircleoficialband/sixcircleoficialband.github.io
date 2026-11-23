@@ -36,8 +36,32 @@
     MENU.map(function (m) { return '<a href="' + m[1] + '"' + (m[0] === pagina ? ' class="activo" aria-current="page"' : '') + '>' + m[2] + '</a>'; }).join('') + '</nav></div>';
   var bm = $('.boton-menu'), nav = $('#menu');
   bm.addEventListener('click', function () { var a = nav.classList.toggle('abierto'); bm.setAttribute('aria-expanded', a); bm.textContent = a ? '✕' : '☰'; bm.setAttribute('aria-label', a ? 'Cerrar menú' : 'Abrir menú'); });
-  $('#pie').innerHTML = '<div class="envoltura pie"><div>© ' + new Date().getFullYear() + ' ' + esc(B.nombre) + ' · ' + esc(B.pais) + '<br><a class="ghatu" href="https://ghatugames.github.io" target="_blank" rel="noopener">Web hecha por <b>Ghatu Games</b></a></div>' +
+  $('#pie').innerHTML = '<div class="envoltura pie"><div>© ' + new Date().getFullYear() + ' ' + esc(B.nombre) + ' · ' + esc(B.pais) + '<br><a class="ghatu" href="https://ghatugames.github.io" target="_blank" rel="noopener">Web hecha por <b>Ghatu Games</b></a><br><span class="visitas" id="visitas" aria-live="polite"><span>Visitas</span><b>0</b></span></div>' +
     '<div class="redes" aria-label="Redes y plataformas">' + REDES.concat(MUSICA).filter(function (k) { return E[k]; }).map(function (k) { return '<a' + ext(E[k]) + ' aria-label="' + NOMBRES[k] + '" title="' + NOMBRES[k] + '">' + I[k] + '</a>'; }).join('') + '</div></div>';
+
+  /* Contador de visitas visible (abacus.jasoncameron.dev: gratis, sin cuenta, sin cookies).
+     Cuenta UNA visita por sesión del navegador (sessionStorage); en las demás páginas solo lee el total.
+     Si el servicio no responde, el contador queda oculto (su espacio ya está reservado: no mueve nada). */
+  (function () {
+    var el = $('#visitas'); if (!el || !window.fetch || !window.JSON) return;
+    var API = 'https://abacus.jasoncameron.dev/', CLAVE = 'sixcircleoficialband/visitas';
+    var ss = null; try { ss = window.sessionStorage; ss.setItem('sc_prueba', '1'); ss.removeItem('sc_prueba'); } catch (e) { ss = null; }
+    var leer = pagina === '404' || (ss && ss.getItem('sc_visita') === '1');
+    var ctl = window.AbortController ? new AbortController() : null;
+    var t = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(API + (leer ? 'get/' : 'hit/') + CLAVE, { cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function (d) {
+        clearTimeout(t);
+        var n = Math.floor(Number(d && d.value));
+        if (!(n >= 0)) return;
+        if (ss && !leer) ss.setItem('sc_visita', '1');
+        el.querySelector('b').textContent = String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        el.setAttribute('title', 'Visitas a la web');
+        el.classList.add('listo');
+      })
+      .catch(function () { clearTimeout(t); });
+  })();
 
   /* piezas */
   function disco(l) {

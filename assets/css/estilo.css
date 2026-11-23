@@ -110,5 +110,8 @@ main{flex:1;outline:none}
 .pie .redes a{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--linea);border-radius:50%;color:var(--plata)}.pie .redes a:hover{color:#fff;border-color:var(--rojo2)}
 .pie .redes svg{width:18px;height:18px;fill:currentColor}
 .ghatu{color:var(--suave);text-decoration:none;font-size:13px}.ghatu b{color:#ff79b4}.ghatu:hover{color:#fff}
+.visitas{display:inline-flex;align-items:center;gap:9px;margin-top:10px;min-height:30px;padding:4px 12px 4px 10px;border:1px solid var(--linea);border-left:3px solid var(--rojo);background:var(--panel);color:var(--suave);font-size:11px;letter-spacing:.18em;text-transform:uppercase;visibility:hidden;opacity:0;transition:opacity .4s}
+.visitas b{font:400 17px/1 Impact,"Haettenschweiler","Arial Narrow Bold","Oswald",sans-serif;letter-spacing:.06em;color:var(--plata);font-variant-numeric:tabular-nums}
+.visitas.listo{visibility:visible;opacity:1}
 .vacio{padding:30px;text-align:center;color:var(--suave)}
 [hidden]{display:none!important}
