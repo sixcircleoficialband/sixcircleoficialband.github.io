@@ -148,6 +148,8 @@ SC.lanzamientos = [
    destacado: true -> aparece en la página de Inicio.
    --------------------------------------------------------------------- */
 SC.videos = [
+  { id: 'N-UJxQ_vu6A', destacado: true, titulo: 'Six Circle - Gravity', fecha: '2026-11-26' },
+  { id: 'tHHVorFs5Jo', destacado: true, titulo: 'Six Circle - Concrete Resonance  (Sub)', fecha: '2026-11-26' },
   { id: 'ZoM25X4KyQQ', destacado: true, titulo: 'Six Circle - Cure My Tragedy (sub español/ingles)', fecha: '2026-10-29' },
   { id: 'N1l0gToUTE0', destacado: true, titulo: 'Six Circle - Golden Sun (sub español/ingles)', fecha: '2026-10-28' },
   { id: 'GSkDFf8QdmY', titulo: '25 de octubre de 2026', fecha: '2026-10-25' },

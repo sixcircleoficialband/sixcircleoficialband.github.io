@@ -24,6 +24,14 @@
 var SC = window.SC = window.SC || {};
 
 SC.noticias = [
+  { fecha: '2026-11-26', tipo: 'video', clave: 'video:N-UJxQ_vu6A',
+    titulo: 'Nuevo video: «Six Circle - Gravity»',
+    texto: 'Ya está en el canal de YouTube de Six Circle.',
+    imagen: 'assets/img/videos/N-UJxQ_vu6A.webp', enlace: 'https://www.youtube.com/watch?v=N-UJxQ_vu6A', enlaceTexto: 'Ver en YouTube' },
+  { fecha: '2026-11-26', tipo: 'video', clave: 'video:tHHVorFs5Jo',
+    titulo: 'Nuevo video: «Six Circle - Concrete Resonance  (Sub)»',
+    texto: 'Ya está en el canal de YouTube de Six Circle.',
+    imagen: 'assets/img/videos/tHHVorFs5Jo.webp', enlace: 'https://www.youtube.com/watch?v=tHHVorFs5Jo', enlaceTexto: 'Ver en YouTube' },
   { fecha: '2026-11-22', tipo: 'web', clave: 'web:nueva-direccion',
     titulo: 'La web estrena dirección',
     texto: 'La web oficial de Six Circle ahora está en sixcircleoficialband.github.io. La dirección anterior lleva aquí automáticamente.',
